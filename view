@@ -1,0 +1,761 @@
+@{
+    Layout = "_Layout"; // Replace with the correct layout name
+}
+@using System.Text.Json;
+@model ExpenseForm.ViewModels.NatureOfRequestViewModel
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Nature Of Request</title>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+
+    <script>
+        var $j = jQuery.noConflict();
+        $j(document).ready(function () {
+            $j('.js-example-basic-single').select2();
+        });
+    </script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+
+    <style>
+        .dynamic-options-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .delete-option-btn {
+            margin-left: 10px;
+        }
+
+        /* Styling for dropdowns */
+        .form-group select {
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            padding: 8px;
+            width: calc(100% - 30px); /* Adjusted width for the arrow */
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background: url('https://img.icons8.com/material-outlined/24/000000/expand-arrow--v1.png') no-repeat right center;
+            background-size: 20px; /* Adjust the size of the arrow */
+            cursor: pointer;
+        }
+
+        .form-group input[type="text"] {
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            padding: 8px;
+            margin-top: 5px;
+            width: 70%;
+        }
+
+        .add-option-btn,
+        .delete-option-btn {
+            margin-top: 5px;
+        }
+
+        /* Optional: Style for the entire form */
+        form {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Create Nature of Request</h1>
+
+        @using (Html.BeginForm("Create", "Home", FormMethod.Post, new { @class = "disable-client-validation" }))
+        {
+            <div class="form-group">
+                @Html.LabelFor(model => model.Nature_of_Request, htmlAttributes: new { @class = "control-label" })
+                <div class="input-group">
+                    <select id="Nature_of_Request" class="form-control js-example-basic-single" style="width: 100%;" name="Nature_of_Request">
+                        <option value="">Select an option</option>
+                        @foreach (var option in Model.NatureOfRequestOptions)
+                        {
+                            <option value="@option.Value">@option.Text</option>
+                        }
+                    </select>
+                    <div class="input-group-append">
+                        <input type="text" id="NewNatureOfRequestOption" placeholder="Enter a new option" />
+                        <button type="button" class="btn btn-sm btn-success add-option-btn" data-dropdown-id="Nature_of_Request" data-options-key="NatureOfRequestOptions">Add Option</button>
+                        <button type="button" class="btn btn-sm btn-danger delete-option-btn" data-dropdown-id="Nature_of_Request">Delete Selected Option</button>
+                    </div>
+                </div>
+                <div class="dynamic-options-container" id="NatureOfRequestOptions"></div>
+            </div>
+
+            <!-- For the Nature of Request dropdown -->
+            <div class="form-group">
+                @Html.LabelFor(model => model.Nature_of_Request_Descr, htmlAttributes: new { @class = "control-label" })
+                <div class="input-group">
+                    <select id="Nature_of_Request_Descr" class="form-control js-example-basic-single" style="width: 100%;" name="Nature_of_Request_Descr">
+                        <option value="">Select an option</option>
+                        @foreach (var option in Model.NatureOfRequestDescriptionOptions)
+                        {
+                            <option value="@option.Value">@option.Text</option>
+                        }
+                    </select>
+                    <div class="input-group-append">
+                        <input type="text" id="NewNatureOfRequestDescrOption" placeholder="Enter a new option" />
+                        <button type="button" class="btn btn-sm btn-success add-option-btn" data-dropdown-id="Nature_of_Request_Descr" data-options-key="NatureOfRequestDescriptionOptions">Add Option</button>
+                        <button type="button" class="btn btn-sm btn-danger delete-option-btn" data-dropdown-id="Nature_of_Request_Descr">Delete Selected Option</button>
+                    </div>
+                </div>
+                @Html.ValidationMessageFor(model => model.Nature_of_Request_Descr, "", new { @class = "text-danger" })
+                <div class="dynamic-options-container" id="NatureOfRequestDescriptionOptions"></div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Source_Agency_Id, htmlAttributes: new { @class = "control-label" })
+                <div class="input-group">
+                    <select id="Source_Agency_Id" class="form-control js-example-basic-single" style="width: 100%;" name="Source_Agency_Id">
+                        <option value="">Select an option</option>
+                        @foreach (var option in Model.SourceAgencyOptions)
+                        {
+                            <option value="@option.Value">@option.Text</option>
+                        }
+                    </select>
+                    <div class="input-group-append">
+                        <input type="text" id="NewSourceAgencyOption" placeholder="Enter a new option" />
+                        <button type="button" class="btn btn-sm btn-success add-option-btn" data-dropdown-id="Source_Agency_Id" data-options-key="SourceAgencyOptions">Add Option</button>
+                        <button type="button" class="btn btn-sm btn-danger delete-option-btn" data-dropdown-id="Source_Agency_Id">Delete Selected Option</button>
+                    </div>
+                </div>
+                @Html.ValidationMessageFor(model => model.Source_Agency_Id, "", new { @class = "text-danger" })
+                <div class="dynamic-options-container" id="Source_Agency_Id_Options"></div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.As_Is_Agency, htmlAttributes: new { @class = "control-label" })
+                <div class="input-group">
+                    <select id="As_Is_Agency" class="form-control js-example-basic-single" style="width: 100%;" name="As_Is_Agency">
+                        <option value="">Select an option</option>
+                        @foreach (var option in Model.AsIsAgencyOptions)
+                        {
+                            <option value="@option.Value">@option.Text</option>
+                        }
+                    </select>
+                    <div class="input-group-append">
+                        <input type="text" id="NewAsIsAgencyOption" placeholder="Enter a new option" />
+                        <button type="button" class="btn btn-sm btn-success add-option-btn" data-dropdown-id="As_Is_Agency" data-options-key="AsIsAgencyOptions">Add Option</button>
+                        <button type="button" class="btn btn-sm btn-danger delete-option-btn" data-dropdown-id="As_Is_Agency">Delete Selected Option</button>
+                    </div>
+                </div>
+                @Html.ValidationMessageFor(model => model.As_Is_Agency, "", new { @class = "text-danger" })
+                <div class="dynamic-options-container" id="As_Is_Agency_Options"></div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.As_Is_Agency_Descr, htmlAttributes: new { @class = "control-label" })
+                <div class="input-group">
+                    <select id="As_Is_Agency_Descr" class="form-control js-example-basic-single" style="width: 100%;" name="As_Is_Agency_Descr">
+                        <option value="">Select an option</option>
+                        @foreach (var option in Model.AsIsAgencyDescriptionOptions)
+                        {
+                            <option value="@option.Value">@option.Text</option>
+                        }
+                    </select>
+                    <div class="input-group-append">
+                        <input type="text" id="NewAsIsAgencyDescrOption" placeholder="Enter a new option" />
+                        <button type="button" class="btn btn-sm btn-success add-option-btn" data-dropdown-id="As_Is_Agency_Descr" data-options-key="AsIsAgencyDescrOptions">Add Option</button>
+                        <button type="button" class="btn btn-sm btn-danger delete-option-btn" data-dropdown-id="As_Is_Agency_Descr">Delete Selected Option</button>
+                    </div>
+                </div>
+                @Html.ValidationMessageFor(model => model.As_Is_Agency_Descr, "", new { @class = "text-danger" })
+                <div class="dynamic-options-container" id="As_Is_Agency_Descr_Options"></div>
+            </div>
+
+            <!-- Repeat the above code block for each additional dropdown -->
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.To_Be_Agency, htmlAttributes: new { @class = "control-label" })
+                <div class="input-group">
+                    <select id="To_Be_Agency" class="form-control js-example-basic-single" style="width: 100%;" name="To_Be_Agency">
+                        <option value="">Select an option</option>
+                        @foreach (var option in Model.ToBeAgencyOptions)
+                        {
+                            <option value="@option.Value">@option.Text</option>
+                        }
+                    </select>
+                    <div class="input-group-append">
+                        <input type="text" id="NewToBeAgencyOption" placeholder="Enter a new option" />
+                        <button type="button" class="btn btn-sm btn-success add-option-btn" data-dropdown-id="To_Be_Agency" data-options-key="ToBeAgencyOptions">Add Option</button>
+                        <button type="button" class="btn btn-sm btn-danger delete-option-btn" data-dropdown-id="To_Be_Agency">Delete Selected Option</button>
+                    </div>
+                </div>
+                @Html.ValidationMessageFor(model => model.To_Be_Agency, "", new { @class = "text-danger" })
+                <div class="dynamic-options-container" id="To_Be_Agency_Options"></div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.To_Be_Agency_Descr, htmlAttributes: new { @class = "control-label" })
+                <div class="input-group">
+                    <select id="To_Be_Agency_Descr" class="form-control js-example-basic-single" style="width: 100%;" name="To_Be_Agency_Descr">
+                        <option value="">Select an option</option>
+                        @foreach (var option in Model.ToBeAgencyDescriptionOptions)
+                        {
+                            <option value="@option.Value">@option.Text</option>
+                        }
+                    </select>
+                    <div class="input-group-append">
+                        <input type="text" id="NewToBeAgencyDescrOption" placeholder="Enter a new option" />
+                        <button type="button" class="btn btn-sm btn-success add-option-btn" data-dropdown-id="To_Be_Agency_Descr" data-options-key="ToBeAgencyDescrOptions">Add Option</button>
+                        <button type="button" class="btn btn-sm btn-danger delete-option-btn" data-dropdown-id="To_Be_Agency_Descr">Delete Selected Option</button>
+                    </div>
+                </div>
+                @Html.ValidationMessageFor(model => model.To_Be_Agency_Descr, "", new { @class = "text-danger" })
+                <div class="dynamic-options-container" id="To_Be_Agency_Descr_Options"></div>
+            </div>
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Destination_Sys, htmlAttributes: new { @class = "control-label" })
+                <div class="input-group">
+                    <select id="Destination_Sys" class="form-control js-example-basic-single" style="width: 100%;" name="Destination_Sys">
+                        <option value="">Select an option</option>
+                        @foreach (var option in Model.DestinationSysOptions)
+                        {
+                            <option value="@option.Value">@option.Text</option>
+                        }
+                    </select>
+                    <div class="input-group-append">
+                        <input type="text" id="NewDestinationSysOption" placeholder="Enter a new option" />
+                        <button type="button" class="btn btn-sm btn-success add-option-btn" data-dropdown-id="Destination_Sys" data-options-key="DestinationSysOptions">Add Option</button>
+                        <button type="button" class="btn btn-sm btn-danger delete-option-btn" data-dropdown-id="Destination_Sys">Delete Selected Option</button>
+                    </div>
+                </div>
+                @Html.ValidationMessageFor(model => model.Destination_Sys, "", new { @class = "text-danger" })
+                <div class="dynamic-options-container" id="Destination_Sys_Options"></div>
+            </div>
+
+            <!-- Repeat the above code block for each additional dropdown -->
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Evt_Maint_Department_Code, htmlAttributes: new { @class = "control-label" })
+                <div class="input-group">
+                    <select id="Evt_Maint_Department_Code" class="form-control js-example-basic-single" style="width: 100%;" name="Evt_Maint_Department_Code">
+                        <option value="">Select an option</option>
+                        @foreach (var option in Model.EvtMaintDepartmentCodeOptions)
+                        {
+                            <option value="@option.Value">@option.Text</option>
+                        }
+                    </select>
+                    <div class="input-group-append">
+                        <input type="text" id="NewEvtMaintDepartmentCodeOption" placeholder="Enter a new option" />
+                        <button type="button" class="btn btn-sm btn-success add-option-btn" data-dropdown-id="Evt_Maint_Department_Code" data-options-key="EvtMaintDepartmentCodeOptions">Add Option</button>
+                        <button type="button" class="btn btn-sm btn-danger delete-option-btn" data-dropdown-id="Evt_Maint_Department_Code">Delete Selected Option</button>
+                    </div>
+                </div>
+                @Html.ValidationMessageFor(model => model.Evt_Maint_Department_Code, "", new { @class = "text-danger" })
+                <div class="dynamic-options-container" id="EvtMaintDepartmentCodeOptions"></div>
+            </div>
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Evt_Origin, htmlAttributes: new { @class = "control-label" })
+                <div class="input-group">
+                    <select id="Evt_Origin" class="form-control js-example-basic-single" style="width: 100%;" name="Evt_Origin">
+                        <option value="">Select an option</option>
+                        @foreach (var option in Model.EvtOriginOptions)
+                        {
+                            <option value="@option.Value">@option.Text</option>
+                        }
+                    </select>
+                    <div class="input-group-append">
+                        <input type="text" id="NewEvtOriginOption" placeholder="Enter a new option" />
+                        <button type="button" class="btn btn-sm btn-success add-option-btn" data-dropdown-id="Evt_Origin" data-options-key="EvtOriginOptions">Add Option</button>
+                        <button type="button" class="btn btn-sm btn-danger delete-option-btn" data-dropdown-id="Evt_Origin">Delete Selected Option</button>
+                    </div>
+                </div>
+                @Html.ValidationMessageFor(model => model.Evt_Origin, "", new { @class = "text-danger" })
+                <div class="dynamic-options-container" id="Evt_Origin_Options"></div>
+            </div>
+
+            <!-- Repeat the above code block for each additional dropdown -->
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Evt_Problem_Code, htmlAttributes: new { @class = "control-label" })
+                <div class="input-group">
+                    <select id="Evt_Problem_Code" class="form-control js-example-basic-single" style="width: 100%;" name="Evt_Problem_Code">
+                        <option value="">Select an option</option>
+                        @foreach (var option in Model.EvtProblemCodeOptions)
+                        {
+                            <option value="@option.Value">@option.Text</option>
+                        }
+                    </select>
+                    <div class="input-group-append">
+                        <input type="text" id="NewEvtProblemCodeOption" placeholder="Enter a new option" />
+                        <button type="button" class="btn btn-sm btn-success add-option-btn" data-dropdown-id="Evt_Problem_Code" data-options-key="EvtProblemCodeOptions">Add Option</button>
+                        <button type="button" class="btn btn-sm btn-danger delete-option-btn" data-dropdown-id="Evt_Problem_Code">Delete Selected Option</button>
+                    </div>
+                </div>
+                @Html.ValidationMessageFor(model => model.Evt_Problem_Code, "", new { @class = "text-danger" })
+                <div class="dynamic-options-container" id="Evt_Problem_Code_Options"></div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Evt_Priority, htmlAttributes: new { @class = "control-label" })
+                <div class="input-group">
+                    <select id="Evt_Priority" class="form-control js-example-basic-single" style="width: 100%;" name="Evt_Priority">
+                        <option value="">Select an option</option>
+                        @foreach (var option in Model.EvtPriorityOptions)
+                        {
+                            <option value="@option.Value">@option.Text</option>
+                        }
+                    </select>
+                    <div class="input-group-append">
+                        <input type="text" id="NewEvtPriorityOption" placeholder="Enter a new option" />
+                        <button type="button" class="btn btn-sm btn-success add-option-btn" data-dropdown-id="Evt_Priority" data-options-key="EvtPriorityOptions">Add Option</button>
+                        <button type="button" class="btn btn-sm btn-danger delete-option-btn" data-dropdown-id="Evt_Priority">Delete Selected Option</button>
+                    </div>
+                </div>
+                @Html.ValidationMessageFor(model => model.Evt_Priority, "", new { @class = "text-danger" })
+                <div class="dynamic-options-container" id="Evt_Priority_Options"></div>
+            </div>
+
+            <!-- Repeat the above code block for each additional dropdown -->
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Evt_Status, htmlAttributes: new { @class = "control-label" })
+                <div class="input-group">
+                    <select id="Evt_Status" class="form-control js-example-basic-single" style="width: 100%;" name="Evt_Status">
+                        <option value="">Select an option</option>
+                        @foreach (var option in Model.EvtStatusOptions)
+                        {
+                            <option value="@option.Value">@option.Text</option>
+                        }
+                    </select>
+                    <div class="input-group-append">
+                        <input type="text" id="NewEvtStatusOption" placeholder="Enter a new option" />
+                        <button type="button" class="btn btn-sm btn-success add-option-btn" data-dropdown-id="Evt_Status" data-options-key="EvtStatusOptions">Add Option</button>
+                        <button type="button" class="btn btn-sm btn-danger delete-option-btn" data-dropdown-id="Evt_Status">Delete Selected Option</button>
+                    </div>
+                </div>
+                @Html.ValidationMessageFor(model => model.Evt_Status, "", new { @class = "text-danger" })
+                <div class="dynamic-options-container" id="Evt_Status_Options"></div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Evt_Standwork, htmlAttributes: new { @class = "control-label" })
+                <div class="input-group">
+                    <select id="Evt_Standwork" class="form-control js-example-basic-single" style="width: 100%;" name="Evt_Standwork">
+                        <option value="">Select an option</option>
+                        @foreach (var option in Model.EvtStandworkOptions)
+                        {
+                            <option value="@option.Value">@option.Text</option>
+                        }
+                    </select>
+                    <div class="input-group-append">
+                        <input type="text" id="NewEvtStandworkOption" placeholder="Enter a new option" />
+                        <button type="button" class="btn btn-sm btn-success add-option-btn" data-dropdown-id="Evt_Standwork" data-options-key="EvtStandworkOptions">Add Option</button>
+                        <button type="button" class="btn btn-sm btn-danger delete-option-btn" data-dropdown-id="Evt_Standwork">Delete Selected Option</button>
+                    </div>
+                </div>
+                @Html.ValidationMessageFor(model => model.Evt_Standwork, "", new { @class = "text-danger" })
+                <div class="dynamic-options-container" id="Evt_StandworkOptions"></div>
+            </div>
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Eff_Status, htmlAttributes: new { @class = "control-label" })
+                <div class="input-group">
+                    <select id="Eff_Status" class="form-control js-example-basic-single" style="width: 100%;" name="Eff_Status">
+                        <option value="">Select an option</option>
+                        @foreach (var option in Model.EffStatusOptions)
+                        {
+                            <option value="@option.Value">@option.Text</option>
+                        }
+                    </select>
+                    <div class="input-group-append">
+                        <input type="text" id="NewEffStatusOption" placeholder="Enter a new option" />
+                        <button type="button" class="btn btn-sm btn-success add-option-btn" data-dropdown-id="Eff_Status" data-options-key="EffectiveStatusOptions">Add Option</button>
+                        <button type="button" class="btn btn-sm btn-danger delete-option-btn" data-dropdown-id="Eff_Status">Delete Selected Option</button>
+                    </div>
+                </div>
+                @Html.ValidationMessageFor(model => model.Eff_Status, "", new { @class = "text-danger" })
+                <div class="dynamic-options-container" id="Eff_Status_Options"></div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Is_Current, htmlAttributes: new { @class = "control-label" })
+                <div class="input-group">
+                    <select id="Is_Current" class="form-control js-example-basic-single" style="width: 100%;" name="Is_Current">
+                        <option value="">Select an option</option>
+                        @foreach (var option in Model.IsCurrentOptions)
+                        {
+                            <option value="@option.Value">@option.Text</option>
+                        }
+                    </select>
+                    <div class="input-group-append">
+                        <input type="text" id="NewIsCurrentOption" placeholder="Enter a new option" />
+                        <button type="button" class="btn btn-sm btn-success add-option-btn" data-dropdown-id="Is_Current" data-options-key="IsCurrentOptions">Add Option</button>
+                        <button type="button" class="btn btn-sm btn-danger delete-option-btn" data-dropdown-id="Is_Current">Delete Selected Option</button>
+                    </div>
+                </div>
+                @Html.ValidationMessageFor(model => model.Is_Current, "", new { @class = "text-danger" })
+                <div class="dynamic-options-container" id="Is_Current_Options"></div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Eff_From_Dt, htmlAttributes: new { @class = "control-label" })
+                <div class="input-group">
+                    <select id="Eff_From_Dt" class="form-control js-example-basic-single" style="width: 100%;" name="Eff_From_Dt">
+                        <option value="">Select an option</option>
+                        @foreach (var option in Model.EffectiveFromDateOptions)
+                        {
+                            <option value="@option.Value">@option.Text</option>
+                        }
+                    </select>
+                    <div class="input-group-append">
+                        <input type="text" id="NewEffectiveFromDateOption" placeholder="Enter a new option" />
+                        <button type="button" class="btn btn-sm btn-success add-option-btn" data-dropdown-id="Eff_From_Dt" data-options-key="EffectiveFromDateOptions">Add Option</button>
+                        <button type="button" class="btn btn-sm btn-danger delete-option-btn" data-dropdown-id="Eff_From_Dt">Delete Selected Option</button>
+                    </div>
+                </div>
+                @Html.ValidationMessageFor(model => model.Eff_From_Dt, "", new { @class = "text-danger" })
+                <div class="dynamic-options-container" id="Eff_From_Dt_Options"></div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Eff_To_Dt, htmlAttributes: new { @class = "control-label" })
+                <div class="input-group">
+                    <select id="Eff_To_Dt" class="form-control js-example-basic-single" style="width: 100%;" name="Eff_To_Dt">
+                        <option value="">Select an option</option>
+                        @foreach (var option in Model.EffectiveToDateOptions)
+                        {
+                            <option value="@option.Value">@option.Text</option>
+                        }
+                    </select>
+                    <div class="input-group-append">
+                        <input type="text" id="NewEffectiveToDateOption" placeholder="Enter a new option" />
+                        <button type="button" class="btn btn-sm btn-success add-option-btn" data-dropdown-id="Eff_To_Dt" data-options-key="EffectiveToDateOptions">Add Option</button>
+                        <button type="button" class="btn btn-sm btn-danger delete-option-btn" data-dropdown-id="Eff_To_Dt">Delete Selected Option</button>
+                    </div>
+                </div>
+                @Html.ValidationMessageFor(model => model.Eff_To_Dt, "", new { @class = "text-danger" })
+                <div class="dynamic-options-container" id="Eff_To_Dt_Options"></div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Comment, htmlAttributes: new { @class = "control-label" })
+                <div class="input-group">
+                    @Html.TextBoxFor(model => model.Comment, new { @class = "form-control", placeholder = "Enter a comment" })
+                </div>
+                @Html.ValidationMessageFor(model => model.Comment, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Tree_Triage_Action, htmlAttributes: new { @class = "control-label" })
+                <div class="input-group">
+                    <select id="Tree_Triage_Action" class="form-control js-example-basic-single" style="width: 100%;" name="Tree_Triage_Action">
+                        <option value="">Select an option</option>
+                        @foreach (var option in Model.TreeTriageActionOptions)
+                        {
+                            <option value="@option.Value">@option.Text</option>
+                        }
+                    </select>
+                    <div class="input-group-append">
+                        <input type="text" id="NewTreeTriageActionOption" placeholder="Enter a new option" />
+                        <button type="button" class="btn btn-sm btn-success add-option-btn" data-dropdown-id="Tree_Triage_Action" data-options-key="TreeTriageActionOptions">Add Option</button>
+                        <button type="button" class="btn btn-sm btn-danger delete-option-btn" data-dropdown-id="Tree_Triage_Action">Delete Selected Option</button>
+                    </div>
+                </div>
+                @Html.ValidationMessageFor(model => model.Tree_Triage_Action, "", new { @class = "text-danger" })
+                <div class="dynamic-options-container" id="Tree_Triage_Action_Options"></div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Tree_Service_Category, htmlAttributes: new { @class = "control-label" })
+                <div class="input-group">
+                    <select id="Tree_Service_Category" class="form-control js-example-basic-single" style="width: 100%;" name="Tree_Service_Category">
+                        <option value="">Select an option</option>
+                        @foreach (var option in Model.TreeServiceCategoryOptions)
+                        {
+                            <option value="@option.Value">@option.Text</option>
+                        }
+                    </select>
+                    <div class="input-group-append">
+                        <input type="text" id="NewTreeServiceCategoryOption" placeholder="Enter a new option" />
+                        <button type="button" class="btn btn-sm btn-success add-option-btn" data-dropdown-id="Tree_Service_Category" data-options-key="TreeServiceCategoryOptions">Add Option</button>
+                        <button type="button" class="btn btn-sm btn-danger delete-option-btn" data-dropdown-id="Tree_Service_Category">Delete Selected Option</button>
+                    </div>
+                </div>
+                @Html.ValidationMessageFor(model => model.Tree_Service_Category, "", new { @class = "text-danger" })
+                <div class="dynamic-options-container" id="TreeServiceCategoryOptions"></div>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+
+
+
+            <br /><br /><br /><br />
+        }
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    @{
+        var natureOfRequestOptions = Json.Serialize(ViewBag.NatureOfRequestOptions);
+        var natureOfRequestDescriptionOptions = Json.Serialize(ViewBag.NatureOfRequestDescriptionOptions);
+        var sourceAgencyOptions = Json.Serialize(ViewBag.SourceAgencyOptions);
+        var asIsAgencyOptions = Json.Serialize(ViewBag.AsIsAgencyOptions);
+        var asIsAgencyDescriptionOptions = Json.Serialize(ViewBag.AsIsAgencyDescriptionOptions);
+        var toBeAgencyOptions = Json.Serialize(ViewBag.ToBeAgencyOptions);
+        var toBeAgencyDescriptionOptions = Json.Serialize(ViewBag.ToBeAgencyDescriptionOptions);
+        var destinationSysOptions = Json.Serialize(ViewBag.DestinationSysOptions);
+        var evtMaintDepartmentCodeOptions = Json.Serialize(ViewBag.EvtMaintDepartmentCodeOptions);
+        var evtOriginOptions = Json.Serialize(ViewBag.EvtOriginOptions);
+        var evtProblemCodeOptions = Json.Serialize(ViewBag.EvtProblemCodeOptions);
+        var evtPriorityOptions = Json.Serialize(ViewBag.EvtPriorityOptions);
+        var evtStatusOptions = Json.Serialize(ViewBag.EvtStatusOptions);
+        var evtStandworkOptions = Json.Serialize(ViewBag.EvtStandworkOptions);
+        var effectiveStatusOptions = Json.Serialize(ViewBag.EffStatusOptions);
+        var isCurrentOptions = Json.Serialize(ViewBag.IsCurrentOptions);
+        var effectiveFromDateOptions = Json.Serialize(ViewBag.EffectiveFromDateOptions);
+        var effectiveToDateOptions = Json.Serialize(ViewBag.EffectiveToDateOptions);
+        var treeTriageActionOptions = Json.Serialize(ViewBag.TreeTriageActionOptions);
+        var treeServiceCategoryOptions = Json.Serialize(ViewBag.TreeServiceCategoryOptions);
+    }
+
+    <input type="hidden" id="NatureOfRequestOptions_Static" value='["1", "14", "20", "3", "48"]'>
+    <input type="hidden" id="NatureOfRequestDescriptionOptions_Static" value='["DPW BUF Queue", "DPW BSSR Queue", "DPW SWS Queue", "DPW SWS Queue2"]'>
+    <input type="hidden" id="SourceAgencyOptions_Static" value='["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "Not Applicable"]'>
+    <input type="hidden" id="AsIsAgencyOptions_Static" value='["A", "B", "C", "D", "E", "F"]'>
+    <input type="hidden" id="AsIsAgencyDescriptionOptions_Static" value='["LP 1", "LP 2", "LP 3", "LP 4", "LP 5", "LP 6", "LP 7", "D4", "D7N", "D7S", "Not Applicable"]'>
+    <input type="hidden" id="ToBeAgencyOptions_Static" value='["ST 1", "ST 2", "ST 3", "Not Applicable"]'>
+    <input type="hidden" id="ToBeAgencyDescriptionOptions_Static" value='["00:00-13:29", "13:30-20:59", "21:00-23:59", "00:01-24:00"]'>
+    <input type="hidden" id="DestinationSysOptions_Static" value='["AAS", "BT", "CB", "CC", "COMPLA", "COMPLI", "CONTRACT", "DISP", "DMG-SW", "ENC", "FUR", "GW", "HMS", "IS", "LANDSCAP", "LRINST", "LRREM", "LRREP", "LRTO", "MR", "OTHER", "PAINT", "PCH PAV", "PEST", "POTHOLE", "RFS", "SP", "SWEEP", "SWSLID", "TREE", "TRIM", "VP", "WASH", "WD", "WDSAW", "WINSPIL", "WW", "XX", "ZOO", "Not Applicable"]'>
+    <input type="hidden" id="EvtMaintDepartmentCodeOptions_Static" value='["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "Not Applicable"]'>
+    <input type="hidden" id="EvtOriginOptions_Static" value='["A", "B", "C", "D", "E", "F"]'>
+    <input type="hidden" id="EvtProblemCodeOptions_Static" value='["LP 1", "LP 2", "LP 3", "LP 4", "LP 5", "LP 6", "LP 7", "D4", "D7N", "D7S", "Not Applicable"]'>
+    <input type="hidden" id="EvtPriorityOptions_Static" value='["ST 1", "ST 2", "ST 3", "Not Applicable"]'>
+    <input type="hidden" id="EvtStatusOptions_Static" value='["00:00-13:29", "13:30-20:59", "21:00-23:59", "00:01-24:00"]'>
+    <input type="hidden" id="EvtStandworkOptions_Static" value='["AAS", "BT", "CB", "CC", "COMPLA", "COMPLI", "CONTRACT", "DISP", "DMG-SW", "ENC", "FUR", "GW", "HMS", "IS", "LANDSCAP", "LRINST", "LRREM", "LRREP", "LRTO", "MR", "OTHER", "PAINT", "PCH PAV", "PEST", "POTHOLE", "RFS", "SP", "SWEEP", "SWSLID", "TREE", "TRIM", "VP", "WASH", "WD", "WDSAW", "WINSPIL", "WW", "XX", "ZOO", "Not Applicable"]'>
+    <input type="hidden" id="EffStatusOptions_Static" value='["AAS", "BT", "CB", "CC", "COMPLA", "COMPLI", "CONTRACT", "DISP", "DMG-SW", "ENC", "FUR", "GW", "HMS", "IS", "LANDSCAP", "LRINST", "LRREM", "LRREP", "LRTO", "MR", "OTHER", "PAINT", "PCH PAV", "PEST", "POTHOLE", "RFS", "SP", "SWEEP", "SWSLID", "TREE", "TRIM", "VP", "WASH", "WD", "WDSAW", "WINSPIL", "WW", "XX", "ZOO", "Not Applicable"]'>
+    <input type="hidden" id="IsCurrentOptions_Static" value='["AAS", "BT", "CB", "CC", "COMPLA", "COMPLI", "CONTRACT", "DISP", "DMG-SW", "ENC", "FUR", "GW", "HMS", "IS", "LANDSCAP", "LRINST", "LRREM", "LRREP", "LRTO", "MR", "OTHER", "PAINT", "PCH PAV", "PEST", "POTHOLE", "RFS", "SP", "SWEEP", "SWSLID", "TREE", "TRIM", "VP", "WASH", "WD", "WDSAW", "WINSPIL", "WW", "XX", "ZOO", "Not Applicable"]'>
+    <input type="hidden" id="EffectiveFromDateOptions_Static" value='["AAS", "BT", "CB", "CC", "COMPLA", "COMPLI", "CONTRACT", "DISP", "DMG-SW", "ENC", "FUR", "GW", "HMS", "IS", "LANDSCAP", "LRINST", "LRREM", "LRREP", "LRTO", "MR", "OTHER", "PAINT", "PCH PAV", "PEST", "POTHOLE", "RFS", "SP", "SWEEP", "SWSLID", "TREE", "TRIM", "VP", "WASH", "WD", "WDSAW", "WINSPIL", "WW", "XX", "ZOO", "Not Applicable"]'>
+    <input type="hidden" id="EffectiveToDateOptions_Static" value='["AAS", "BT", "CB", "CC", "COMPLA", "COMPLI", "CONTRACT", "DISP", "DMG-SW", "ENC", "FUR", "GW", "HMS", "IS", "LANDSCAP", "LRINST", "LRREM", "LRREP", "LRTO", "MR", "OTHER", "PAINT", "PCH PAV", "PEST", "POTHOLE", "RFS", "SP", "SWEEP", "SWSLID", "TREE", "TRIM", "VP", "WASH", "WD", "WDSAW", "WINSPIL", "WW", "XX", "ZOO", "Not Applicable"]'>
+    <input type="hidden" id="TreeTriageActionOptions_Static" value='["AAS", "BT", "CB", "CC", "COMPLA", "COMPLI", "CONTRACT", "DISP", "DMG-SW", "ENC", "FUR", "GW", "HMS", "IS", "LANDSCAP", "LRINST", "LRREM", "LRREP", "LRTO", "MR", "OTHER", "PAINT", "PCH PAV", "PEST", "POTHOLE", "RFS", "SP", "SWEEP", "SWSLID", "TREE", "TRIM", "VP", "WASH", "WD", "WDSAW", "WINSPIL", "WW", "XX", "ZOO", "Not Applicable"]'>
+    <input type="hidden" id="TreeServiceCategoryOptions_Static" value='["AAS", "BT", "CB", "CC", "COMPLA", "COMPLI", "CONTRACT", "DISP", "DMG-SW", "ENC", "FUR", "GW", "HMS", "IS", "LANDSCAP", "LRINST", "LRREM", "LRREP", "LRTO", "MR", "OTHER", "PAINT", "PCH PAV", "PEST", "POTHOLE", "RFS", "SP", "SWEEP", "SWSLID", "TREE", "TRIM", "VP", "WASH", "WD", "WDSAW", "WINSPIL", "WW", "XX", "ZOO", "Not Applicable"]'>
+
+    <script>
+            document.addEventListener('DOMContentLoaded', function () {
+
+            function addOption(optionsKey, dropdownId, newOptionInputId) {
+                console.log('Adding option:', optionsKey, dropdownId, newOptionInputId);
+
+                // Retrieve the new option input field
+                var newOptionInput = document.getElementById(newOptionInputId);
+
+                // Trim and get the value
+                var newOptionValue = newOptionInput ? newOptionInput.value.trim() : null;
+
+                console.log('New Option Input:', newOptionInput);
+                console.log('New Option Value:', newOptionValue);
+
+                if (newOptionValue !== null && newOptionValue !== "") {
+                    saveOptionToLocalStorage(optionsKey, newOptionValue);
+                    reloadDropdown(optionsKey, dropdownId, newOptionInputId);
+                } else {
+                    console.log('New option value is empty or null. Please enter a valid value.');
+                }
+            }
+
+
+            function deleteOption(optionsKey, dropdownId) {
+                var dropdown = document.getElementById(dropdownId);
+                var selectedOptionIndex = dropdown ? dropdown.selectedIndex : -1;
+
+                if (selectedOptionIndex !== -1) {
+                    removeOptionFromLocalStorage(optionsKey, dropdown.options[selectedOptionIndex].value);
+                    reloadDropdown(optionsKey, dropdownId, null);
+                } else {
+                    console.log('No option selected. Please select an option to delete.');
+                }
+            }
+
+                function removeOptionFromLocalStorage(optionsKey, optionValue) {
+                    var dynamicOptions = loadOptionsFromLocalStorage(optionsKey);
+                    dynamicOptions = dynamicOptions.filter(function (option) {
+                        return option !== optionValue;
+                    });
+                    localStorage.setItem(optionsKey, JSON.stringify(dynamicOptions));
+                }
+
+                function saveOptionToLocalStorage(optionsKey, newOptionValue) {
+                    var dynamicOptions = loadOptionsFromLocalStorage(optionsKey);
+                    dynamicOptions.push(newOptionValue);
+                    dynamicOptions = Array.from(new Set(dynamicOptions));
+                    localStorage.setItem(optionsKey, JSON.stringify(dynamicOptions));
+                }
+
+                function loadOptionsFromLocalStorage(optionsKey) {
+                    var optionsJson = localStorage.getItem(optionsKey);
+                    var dynamicOptions = [];
+
+                    if (optionsJson) {
+                        dynamicOptions = JSON.parse(optionsJson);
+                    }
+
+                    return dynamicOptions;
+                }
+
+            function reloadDropdown(optionsKey, dropdownId, newOptionInputId) {
+                var dropdown = document.getElementById(dropdownId);
+
+                // Check if the dropdown element is found
+                if (!dropdown) {
+                    console.error('Dropdown element not found:', dropdownId);
+                    return;
+                }
+
+                var staticOptions = getStaticOptions(optionsKey);
+                var dynamicOptions = loadOptionsFromLocalStorage(optionsKey);
+
+                console.log('Static Options:', staticOptions); // Add this line
+                console.log('Dynamic Options:', dynamicOptions); // Add this line
+
+                dropdown.options.length = 0;
+                var defaultOption = document.createElement('option');
+                defaultOption.text = 'Select an option';
+                defaultOption.value = '';
+                dropdown.add(defaultOption);
+
+                staticOptions.forEach(function (option) {
+                    var newOption = document.createElement('option');
+                    newOption.text = option;
+                    newOption.value = option;
+                    dropdown.add(newOption);
+                });
+
+                dynamicOptions.forEach(function (option) {
+                    var newOption = document.createElement('option');
+                    newOption.text = option;
+                    newOption.value = option;
+                    dropdown.add(newOption);
+                });
+            }
+
+            function getStaticOptions(optionsKey) {
+                switch (optionsKey) {
+                    case "NatureOfRequestOptions":
+                        return JSON.parse(document.getElementById(optionsKey + "_Static").value);
+
+                    case "NatureOfRequestDescriptionOptions":
+                        return JSON.parse(document.getElementById(optionsKey + "_Static").value);
+
+                    case "SourceAgencyOptions":
+                        return JSON.parse(document.getElementById(optionsKey + "_Static").value);
+
+                    case "AsIsAgencyOptions":
+                        return JSON.parse(document.getElementById(optionsKey + "_Static").value);
+
+                    case "AsIsAgencyDescriptionOptions":
+                        return JSON.parse(document.getElementById(optionsKey + "_Static").value);
+
+                    case "ToBeAgencyOptions":
+                        return JSON.parse(document.getElementById(optionsKey + "_Static").value);
+
+                    case "ToBeAgencyDescriptionOptions":
+                        return JSON.parse(document.getElementById(optionsKey + "_Static").value);
+
+                    case "DestinationSysOptions":
+                        return JSON.parse(document.getElementById(optionsKey + "_Static").value);
+
+                    case "EvtMaintDepartmentCodeOptions":
+                        return JSON.parse(document.getElementById(optionsKey + "_Static").value);
+
+                    case "EvtOriginOptions":
+                        return JSON.parse(document.getElementById(optionsKey + "_Static").value);
+
+                    case "EvtProblemCodeOptions":
+                        return JSON.parse(document.getElementById(optionsKey + "_Static").value);
+
+                    case "EvtPriorityOptions":
+                        return JSON.parse(document.getElementById(optionsKey + "_Static").value);
+
+                    case "EvtStatusOptions":
+                        return JSON.parse(document.getElementById(optionsKey + "_Static").value);
+
+                    case "EvtStandworkOptions":
+                        return JSON.parse(document.getElementById(optionsKey + "_Static").value);
+
+                    case "EffStatusOptions":
+                        return JSON.parse(document.getElementById(optionsKey + "_Static").value);
+
+                    case "IsCurrentOptions":
+                        return JSON.parse(document.getElementById(optionsKey + "_Static").value);
+
+                    case "EffectiveFromDateOptions":
+                        return JSON.parse(document.getElementById(optionsKey + "_Static").value);
+
+                    case "EffectiveToDateOptions":
+                        return JSON.parse(document.getElementById(optionsKey + "_Static").value);
+
+                    case "TreeTriageActionOptions":
+                        return JSON.parse(document.getElementById(optionsKey + "_Static").value);
+
+                    case "TreeServiceCategoryOptions":
+                        return JSON.parse(document.getElementById(optionsKey + "_Static").value);
+
+                    // Add other cases for additional options...
+
+                    default:
+                        return [];
+                }
+            }
+
+            function initializeDropdown(optionsKey, dropdownId, newOptionInputId) {
+                console.log('Initializing dropdown:', dropdownId);
+                var dropdown = document.getElementById(dropdownId);
+
+                // Check if the dropdown element is found
+                if (!dropdown) {
+                    console.error('Dropdown element not found:', dropdownId);
+                    return;
+                }
+
+                console.log('Calling reloadDropdown...');
+                reloadDropdown(optionsKey, dropdownId, newOptionInputId);
+
+                document.addEventListener('click', function (event) {
+                    if (event.target.classList.contains('add-option-btn')) {
+                        console.log('Add option button clicked.');
+                        addOption(optionsKey, dropdownId, newOptionInputId);
+                    } else if (event.target.classList.contains('delete-option-btn')) {
+                        console.log('Delete option button clicked.');
+                        deleteOption(optionsKey, dropdownId);
+                    }
+                });
+            }
+
+
+            initializeDropdown('NatureOfRequestOptions', 'Nature_of_Request', 'NewNatureOfRequestOption');
+            initializeDropdown('NatureOfRequestDescriptionOptions', 'Nature_of_Request_Descr', 'NewNatureOfRequestDescrOption');
+            initializeDropdown('SourceAgencyOptions', 'Source_Agency_Id', 'NewSourceAgencyOption');
+            initializeDropdown('AsIsAgencyOptions', 'As_Is_Agency', 'NewAsIsAgencyOption');
+            initializeDropdown('AsIsAgencyDescriptionOptions', 'As_Is_Agency_Descr', 'NewAsIsAgencyDescrOption');
+            initializeDropdown('ToBeAgencyOptions', 'To_Be_Agency', 'NewToBeAgencyOption');
+            initializeDropdown('ToBeAgencyDescriptionOptions', 'To_Be_Agency_Descr', 'NewToBeAgencyDescrOption');
+            initializeDropdown('DestinationSysOptions', 'Destination_Sys', 'NewDestinationSysOption');
+            initializeDropdown('EvtMaintDepartmentCodeOptions', 'Evt_Maint_Department_Code', 'NewEvtMaintDepartmentCodeOption');
+            initializeDropdown('EvtOriginOptions', 'Evt_Origin', 'NewEvtOriginOption');
+            initializeDropdown('EvtProblemCodeOptions', 'Evt_Problem_Code', 'NewEvtProblemCodeOption');
+            initializeDropdown('EvtPriorityOptions', 'Evt_Priority', 'NewEvtPriorityOption');
+            initializeDropdown('EvtStatusOptions', 'Evt_Status', 'NewEvtStatusOption');
+            initializeDropdown('EvtStandworkOptions', 'Evt_Standwork', 'NewEvtStandworkOption');
+            initializeDropdown('EffStatusOptions', 'Eff_Status', 'NewEffStatusOption');
+            initializeDropdown('IsCurrentOptions', 'Is_Current', 'NewIsCurrentOption');
+            initializeDropdown('EffectiveFromDateOptions', 'Eff_From_Dt', 'NewEffectiveFromDateOption');
+            initializeDropdown('EffectiveToDateOptions', 'Eff_To_Dt', 'NewEffectiveToDateOption');
+            initializeDropdown('TreeTriageActionOptions', 'Tree_Triage_Action', 'NewTreeTriageActionOption');
+            initializeDropdown('TreeServiceCategoryOptions', 'Tree_Service_Category', 'NewTreeServiceCategoryOption');
+        });
+    </script>
+</body>
+</html>
